@@ -7,6 +7,11 @@
 %
 %   See also TERNLABEL TERNPLOT TERNCONTOUR TERNCONTOURF
 
+%       b
+%      / \
+%     /   \
+%    c --- a 
+
 % Author: Peter Selkin 20030508 Modified from Carl Sandrock 20020827
 
 % To Do
@@ -21,9 +26,9 @@ if (nargin~=4)
 	offset=0.03;
 end
 
-r(1) = text(-offset, -offset, A, 'horizontalalignment', 'right');
-r(2) = text(1+offset, -offset, B, 'horizontalalignment', 'left');
-r(3) = text(0.5, sin(deg2rad(60))+offset, C, 'horizontalalignment', 'center');
+r(1) = text(-offset, -offset, C, 'horizontalalignment', 'right');
+r(2) = text(1+offset, -offset, A, 'horizontalalignment', 'left');
+r(3) = text(0.5, sin(deg2rad(60))+offset, B, 'horizontalalignment', 'center');
 
 if nargout > 0
     h = r;

@@ -6,6 +6,11 @@
 %   [X, Y] = TERNCOORDS(FA, FB, FC) returns the same.  FC is assumed to be
 %   the remainder when subtracting FA and FB from 1.
 
+%       b
+%      / \
+%     /   \
+%    c --- a 
+
 % Author: Carl Sandrock 20050211
 
 % Modifications

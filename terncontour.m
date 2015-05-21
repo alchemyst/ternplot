@@ -16,10 +16,10 @@
 %
 %   See also TERNCONTOURF TERNPLOT TERNLABEL PLOT POLAR CONTOUR CONTOURF 
 
-%       c
+%       b
 %      / \
 %     /   \
-%    a --- b 
+%    c --- a 
 
 % Author: Peter Selkin 20030507 based on TERNPLOT by Carl Sandrock 20020827
 
