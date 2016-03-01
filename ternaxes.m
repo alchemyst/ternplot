@@ -55,26 +55,26 @@ if ~hold_state
              'edgecolor',tc,'facecolor',get(gca,'color'),...
              'handlevisibility','off');
     end
-    
+
 	% Generate labels
 	majorticks = linspace(0, 1, majors + 1);
 	majorticks = majorticks(1:end-1);
 	labels = num2str(majorticks'*100);
-	
-    zerocomp = zeros(size(majorticks)); % represents zero composition
-    
+
+  zerocomp = zeros(size(majorticks)); % represents zero composition
+
 	% Plot right labels (no c - only b a)
 	[lxc, lyc] = terncoords(1-majorticks, majorticks, zerocomp);
 	text(lxc, lyc, [repmat('  ', length(labels), 1) labels]);
-	
+
 	% Plot bottom labels (no b - only a c)
 	[lxb, lyb] = terncoords(majorticks, zerocomp, 1-majorticks); % fB = 1-fA
 	text(lxb, lyb, labels, 'VerticalAlignment', 'Top');
-	
+
 	% Plot left labels (no a, only c b)
 	[lxa, lya] = terncoords(zerocomp, 1-majorticks, majorticks);
 	text(lxa-xoffset, lya, labels);
-	
+
 	nlabels = length(labels)-1;
 	for i = 1:nlabels
         plot([lxa(i+1) lxb(nlabels - i + 2)], [lya(i+1) lyb(nlabels - i + 2)], ls, 'color', tc, 'linewidth',1,...
