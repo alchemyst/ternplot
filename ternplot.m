@@ -2,11 +2,12 @@
 %   TERNPLOT(A, B) plots ternary phase diagram for three components.  C is calculated
 %      as 1 - A - B.
 %
-%   TERNPLOT(A, B, C) plots ternary phase data for three components A B and C.  If the values 
-%       are not fractions, the values are normalised by dividing by the total.
+%   TERNPLOT(A, B, C, MAJORS) plots ternary phase data for three components A B and C.  If the values 
+%       are not fractions, the values are normalised by dividing by the
+%       total. Number of steps in axes will be enter by user as MAJORS
 %
-%   TERNPLOT(A, B, C, LINETYPE) the same as the above, but with a user specified LINETYPE (see PLOT
-%       for valid linetypes).
+%   TERNPLOT(A, B, C, MAJORS, LINETYPE) the same as the above, but with a user specified LINETYPE (see PLOT
+%       for valid linetypes). Number of steps in axes will be enter by user as MAJORS
 %   
 %   NOTES
 %   - An attempt is made to keep the plot close to the default plot type.  The code has been based largely on the
@@ -26,13 +27,13 @@
 % To do
 
 % Modifications
+% 20160405 (SA) Added an input argument 'major'
 
 % Modifiers
 % CS Carl Sandrock
+% SA Shahab Afshari
 
-function handles = ternplot(A, B, C, varargin)
-
-majors = 5;
+function handles = ternplot(A, B, C,majors, varargin)
 
 if nargin < 3
     C = 1 - (A+B);
@@ -57,4 +58,3 @@ end
 if ~hold_state
     set(gca,'dataaspectratio',[1 1 1]), axis off; set(cax,'NextPlot',next);
 end
-
