@@ -7,9 +7,9 @@
 %     /   \
 %    c --- a 
 
-% HFINAL = TERNPLOT_PRO(dataA,dataB,dataC,NUM_AXES_STEPS,NUM_COLOR_CLASSES)
+% HFINAL = TERNPLOT_PRO(dataA, dataB, dataC, NUM_AXES_STEPS, NUM_COLOR_CLASSES)
 % plots ternary phase diagram for three components,i.e. dataA,dataB,
-% and dataC, each being as Nx1 vector, where is overall counts of data.
+% and dataC, each being as Nx1 vector, where N is overall counts of data.
 % NUM_AXES_STEPS, is a user specified number of steps (major ticks) on a-c, c-b, and b-a axes. 
 % NUM_COLOR_CLASSES, is a user specified number of classes of assigned
 % facecolor of triangulare cells corresponding to computed point density within a particular cell.
@@ -30,18 +30,19 @@
 % To Do
 
 % Modifications
+% SA The value of 'majors' at the final plot is fixed to 10 to avoid tick
+%    label interruption
 
 % Modifiers
 % (SA) Shahab Afshari
 
 function hfinal = ternplot_pro(dataA,dataB,dataC,num_axes_steps,num_color_classes)
-
 % preliminary effort for getting the indices of values of verticies and faces of
 % each triangular cell generated according to desired number of axial steps
 h0 = figure;
 elev = zeros(num_axes_steps,1);
 experimental = [linspace(0,1,num_axes_steps)',linspace(1,0,num_axes_steps)',elev];
-h = ternpcolor(experimental(:, 1)', experimental(:, 2)', experimental(:, 3)',num_axes_steps);
+h = ternpcolor(experimental(:, 1)', experimental(:, 2)', experimental(:, 3)','majors',num_axes_steps);
 h.FaceColor = 'none';
 v = h.Vertices;
 f = h.Faces;
@@ -57,7 +58,7 @@ f2(ismember(f2(:,3),find(isnan(v(:,3)))),:)=[];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 total_data_count = length(dataA);
-% counting poits located within polygon extent
+% counting points located within polygon extent
 for i = 1: size(f2,1)
 
 inpoly_data_count = inpolygon(x, y,v(f2(i,:),1),v(f2(i,:),2));
@@ -74,7 +75,7 @@ c_mat = [c_mat_1(1:end-1),c_mat_1(2:end),c_mat];
 %
 % Plotting Ternary Diagram 
 hfinal = figure;
-ternplot(dataA, dataB, dataC,num_axes_steps,'.','color','none')
+ternplot(dataA, dataB, dataC,'majors', 10,'.','color','none') % here the 'majors' is fixed to 10 to avoid text-lable interruption.
 set(gca, 'visible', 'off');
 hold on
 for i = 1: size(f2,1)
@@ -94,9 +95,9 @@ modified_color_bar = num2str(...
 h_colbar = colorbar('XTickLabel',{num2str(round(c_mat_down,2));...
 modified_color_bar}, ...
     'XTick',linspace(0,1,num_color_classes)','location','eastoutside');
-ylabel(h_colbar,['Density of AHG (% of Tot. Counts),','Tot. Counts =', num2str(length(dataA))],'fontsize',10,'rotation',90)
+ylabel(h_colbar,['Density (% of Tot. Counts),','Tot. Counts =', num2str(length(dataA))],'fontsize',10,'rotation',90)
 set(gca, 'visible', 'off');
-ht = ternlabel('b^{*}', 'f^{*}', 'm^{*}');
+%ht = ternlabel('b^{*}', 'f^{*}', 'm^{*}');
 % h_text = ternlabel('b', 'f', 'm');
 % h_text(1).FontSize = 14;
 % h_text(2).FontSize = 14;
