@@ -7,16 +7,20 @@
 % To Do
 
 % Modifications
+% 20160405 (SA) Added lines to change the order/direction of axes (i.e.
+%               clockwise or counter-clockwise) cooresponding to user-specified 
+%               option on terncoords
 
 % Modifiers
 % (CS) Carl Sandrock
-
+% (SA) Shahab Afshari
 
 function [hold_state, cax, next] = ternaxes(majors)
+%majors = 10;
 
 %TODO: Get a better way of offsetting the labels
-xoffset = 0.04;
-yoffset = 0.02;
+xoffset = 0.25;
+yoffset = 0.01;
 
 % get hold state
 cax = newplot;
@@ -50,38 +54,41 @@ if ~hold_state
 	set(gca, 'visible', 'off');
 
     % plot background if necessary
-    if ~isstr(get(cax,'color')),
+    if ~isstr(get(cax,'color'))
        patch('xdata', [0 1 0.5 0], 'ydata', [0 0 sin(1/3*pi) 0], ...
              'edgecolor',tc,'facecolor',get(gca,'color'),...
              'handlevisibility','off');
     end
 
 	% Generate labels
-	majorticks = linspace(0, 1, majors + 1);
-	majorticks = majorticks(1:end-1);
-	labels = num2str(majorticks'*100);
-
-  zerocomp = zeros(size(majorticks)); % represents zero composition
-
+    majorticks = linspace(0, 1, majors + 1); 
+    majorticks = majorticks(1:end-1);
+    %%% Counter-clockwise
+    %labels = num2str(majorticks'); %*100
+    %%% Clockwise
+    labels = num2str(sort(majorticks','descend')); %*100
+    
+    zerocomp = zeros(size(majorticks)); % represents zero composition
+    
 	% Plot right labels (no c - only b a)
-	[lxc, lyc] = terncoords(1-majorticks, majorticks, zerocomp);
-	text(lxc, lyc, [repmat('  ', length(labels), 1) labels]);
-
+    [lxc, lyc] = terncoords(1-majorticks, majorticks, zerocomp);
+	text(lxc+0.05, lyc-0.025, [repmat('  ', length(labels), 1) labels]);
+    
 	% Plot bottom labels (no b - only a c)
-	[lxb, lyb] = terncoords(majorticks, zerocomp, 1-majorticks); % fB = 1-fA
-	text(lxb, lyb, labels, 'VerticalAlignment', 'Top');
-
+    [lxb, lyb] = terncoords(majorticks, zerocomp, 1-majorticks); % fB = 1-fA
+	text(lxb-0.115, lyb-0.065, labels, 'VerticalAlignment', 'Top');
+	
 	% Plot left labels (no a, only c b)
 	[lxa, lya] = terncoords(zerocomp, 1-majorticks, majorticks);
-	text(lxa-xoffset, lya, labels);
-
+	text(lxa-0.035, lya+0.09, labels);
+	
 	nlabels = length(labels)-1;
 	for i = 1:nlabels
-        plot([lxa(i+1) lxb(nlabels - i + 2)], [lya(i+1) lyb(nlabels - i + 2)], ls, 'color', tc, 'linewidth',1,...
+        plot([lxa(i+1) lxb(nlabels - i + 2)], [lya(i+1) lyb(nlabels - i + 2)], ls, 'color', tc, 'linewidth',0.25,...
            'handlevisibility','off');
-        plot([lxb(i+1) lxc(nlabels - i + 2)], [lyb(i+1) lyc(nlabels - i + 2)], ls, 'color', tc, 'linewidth',1,...
+        plot([lxb(i+1) lxc(nlabels - i + 2)], [lyb(i+1) lyc(nlabels - i + 2)], ls, 'color', tc, 'linewidth',0.25,...
            'handlevisibility','off');
-        plot([lxc(i+1) lxa(nlabels - i + 2)], [lyc(i+1) lya(nlabels - i + 2)], ls, 'color', tc, 'linewidth',1,...
+        plot([lxc(i+1) lxa(nlabels - i + 2)], [lyc(i+1) lya(nlabels - i + 2)], ls, 'color', tc, 'linewidth',0.25,...
            'handlevisibility','off');
 	end;
 end;

@@ -1,9 +1,9 @@
 % TERNSURF plot surface diagram for ternary phase diagram
-%   TERNSURF(A, B, Z) plots surface fitted over Z on ternary phase diagram for three components.  C is calculated
-%      as 1 - A - B. 
+%   TERNSURF(A, B, MAJORS, Z) plots surface fitted over Z on ternary phase diagram for three components.  C is calculated
+%      as 1 - A - B. Number of steps in axes will be enter by user as MAJORS
 %
-%   TERNSURF(A, B, C, Z) plots surface of Z on ternary phase data for three components A B and C.  If the values 
-%       are not fractions, the values are normalised by dividing by the total.
+%   TERNSURF(A, B, C, MAJORS, Z) plots surface of Z on ternary phase data for three components A B and C.  If the values 
+%       are not fractions, the values are normalised by dividing by the total. Number of steps in axes will be enter by user as MAJORS
 %   
 %   NOTES
 %   - An attempt is made to keep the plot close to the default trisurf type.  The code has been based largely on the
@@ -27,14 +27,16 @@
 % Modifications
 % 20031006 (CS) Added call to SIMPLETRI to plot triangular surface
 % 20070107 (CS) Modified to use new structure (more subroutines)
+% 20160405 (SA) Added an input argument 'major', and an output argument 'handel'
 
 % Modifiers
 % CS Carl Sandrock
+% SA Shahab Afshari
 
-function ternsurf(A, B, C, Z)
-majors = 5;
+function handel = ternsurf(A, B, C,majors,Z)
 
-if nargin < 4
+
+if nargin < 5
     Z = C;
     C = 1 - (A+B);
 end;
@@ -48,7 +50,7 @@ y = y(i);
 Z = Z(i);
 
 % The matrixes we work with should be square for the triangulation to work
-N = 25;
+N = majors+1;
 
 % Now we have X, Y, Z as vectors. 
 % use meshgrid to generate a grid
@@ -66,7 +68,10 @@ zg(Ag + Bg > 1) = nan;
 
 % plot data
 tri = simpletri(N);
-trisurf(tri, xg, yg, zg);
+
+%tri = delaunay(xg, yg, zg);
+handel = trisurf(tri, xg, yg, zg);
+%h = trimesh(tri, xg, yg, zg);
 view([-37.5, 30]);
 
 if ~hold_state

@@ -14,13 +14,23 @@
 % Author: Carl Sandrock 20050211
 
 % Modifications
+% 20160405 (SA) rotation of the ternary axes in clockwise/counter-clockwise order 
+%               (User must directly switch to either options via 
+%               commenting/uncommenting the associated lines.
+%               Moreover, any modification on terncoords must be adjusted 
+%               with associated lines on ternaxes)
 
 % Modifiers
+% SA Shahab Afshari
 
 function [x, y] = terncoords(fA, fB, fC)
 if nargin < 3
     fC = 1 - (fA + fB);
 end
 
-y = fB*sin(deg2rad(60));
-x = fA + y*cot(deg2rad(60));
+%%% Counter-clockwise
+% y = fB*sin(deg2rad(60));
+% x = fA + y*cot(deg2rad(60));
+%%% Clockwise
+y = fC*sin(deg2rad(60));
+x = 1-fA-y*cot(deg2rad(60));
