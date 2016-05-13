@@ -7,9 +7,9 @@
 %     /   \
 %    c --- a 
 
-% HFINAL = TERNPLOT_PRO(dataA,dataB,dataC,NUM_AXES_STEPS,NUM_COLOR_CLASSES)
+% HFINAL = TERNPLOT_PRO(dataA, dataB, dataC, NUM_AXES_STEPS, NUM_COLOR_CLASSES)
 % plots ternary phase diagram for three components,i.e. dataA,dataB,
-% and dataC, each being as Nx1 vector, where is overall counts of data.
+% and dataC, each being as Nx1 vector, where N is overall counts of data.
 % NUM_AXES_STEPS, is a user specified number of steps (major ticks) on a-c, c-b, and b-a axes. 
 % NUM_COLOR_CLASSES, is a user specified number of classes of assigned
 % facecolor of triangulare cells corresponding to computed point density within a particular cell.
@@ -57,7 +57,7 @@ f2(ismember(f2(:,3),find(isnan(v(:,3)))),:)=[];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 total_data_count = length(dataA);
-% counting poits located within polygon extent
+% counting points located within polygon extent
 for i = 1: size(f2,1)
 
 inpoly_data_count = inpolygon(x, y,v(f2(i,:),1),v(f2(i,:),2));

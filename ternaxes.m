@@ -16,7 +16,12 @@
 % (SA) Shahab Afshari
 
 function [hold_state, cax, next] = ternaxes(majors)
-%majors = 10;
+if nargin < 1
+    majors = 10;
+end
+
+direction = 'clockwise';
+percentage = false;
 
 %TODO: Get a better way of offsetting the labels
 xoffset = 0.25;
@@ -40,10 +45,10 @@ fWeight = get(cax, 'DefaultTextFontWeight');
 fUnits  = get(cax, 'DefaultTextUnits');
 
 set(cax, 'DefaultTextFontAngle',  get(cax, 'FontAngle'), ...
-    'DefaultTextFontName',   get(cax, 'FontName'), ...
-    'DefaultTextFontSize',   get(cax, 'FontSize'), ...
-    'DefaultTextFontWeight', get(cax, 'FontWeight'), ...
-    'DefaultTextUnits','data')
+         'DefaultTextFontName',   get(cax, 'FontName'), ...
+         'DefaultTextFontSize',   get(cax, 'FontSize'), ...
+         'DefaultTextFontWeight', get(cax, 'FontWeight'), ...
+         'DefaultTextUnits','data')
 
 % only do grids if hold is off
 if ~hold_state
@@ -63,10 +68,18 @@ if ~hold_state
 	% Generate labels
     majorticks = linspace(0, 1, majors + 1); 
     majorticks = majorticks(1:end-1);
-    %%% Counter-clockwise
-    %labels = num2str(majorticks'); %*100
-    %%% Clockwise
-    labels = num2str(sort(majorticks','descend')); %*100
+
+    if percentage
+        multiplier = 100;
+    else
+        multiplier = 1;
+    end
+    
+    if ~strcmp(direction, 'clockwise')
+        labels = num2str(majorticks'*multiplier);
+    else
+        labels = num2str(majorticks(end:-1:1)'*multiplier);
+    end
     
     zerocomp = zeros(size(majorticks)); % represents zero composition
     

@@ -28,9 +28,12 @@ if nargin < 3
     fC = 1 - (fA + fB);
 end
 
-%%% Counter-clockwise
-% y = fB*sin(deg2rad(60));
-% x = fA + y*cot(deg2rad(60));
-%%% Clockwise
-y = fC*sin(deg2rad(60));
-x = 1-fA-y*cot(deg2rad(60));
+direction = 'clockwise';
+
+if ~strcmp(direction, 'clockwise')
+    y = fB*sin(deg2rad(60));
+    x = fA + y*cot(deg2rad(60));
+else
+    y = fC*sin(deg2rad(60));
+    x = 1 - fA - y*cot(deg2rad(60));
+end
