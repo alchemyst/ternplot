@@ -10,13 +10,20 @@
 % 20160405 (SA) Added lines to change the order/direction of axes (i.e.
 %               clockwise or counter-clockwise) cooresponding to user-specified 
 %               option on terncoords
+% 20161305 (SA) the offsets of tick labels (text) along x and y axes are
+%               modified
 
 % Modifiers
 % (CS) Carl Sandrock
 % (SA) Shahab Afshari
 
 function [hold_state, cax, next] = ternaxes(majors)
-%majors = 10;
+if nargin < 1
+    majors = 10;
+end
+
+direction = 'clockwise';
+percentage = false;
 
 %TODO: Get a better way of offsetting the labels
 xoffset = 0.25;
@@ -40,10 +47,10 @@ fWeight = get(cax, 'DefaultTextFontWeight');
 fUnits  = get(cax, 'DefaultTextUnits');
 
 set(cax, 'DefaultTextFontAngle',  get(cax, 'FontAngle'), ...
-    'DefaultTextFontName',   get(cax, 'FontName'), ...
-    'DefaultTextFontSize',   get(cax, 'FontSize'), ...
-    'DefaultTextFontWeight', get(cax, 'FontWeight'), ...
-    'DefaultTextUnits','data')
+         'DefaultTextFontName',   get(cax, 'FontName'), ...
+         'DefaultTextFontSize',   get(cax, 'FontSize'), ...
+         'DefaultTextFontWeight', get(cax, 'FontWeight'), ...
+         'DefaultTextUnits','data')
 
 % only do grids if hold is off
 if ~hold_state
@@ -59,24 +66,32 @@ if ~hold_state
              'edgecolor',tc,'facecolor',get(gca,'color'),...
              'handlevisibility','off');
     end
-    
+
 	% Generate labels
     majorticks = linspace(0, 1, majors + 1); 
     majorticks = majorticks(1:end-1);
-    %%% Counter-clockwise
-    %labels = num2str(majorticks'); %*100
-    %%% Clockwise
-    labels = num2str(sort(majorticks','descend')); %*100
+
+    if percentage
+        multiplier = 100;
+    else
+        multiplier = 1;
+    end
+    
+    if ~strcmp(direction, 'clockwise')
+        labels = num2str(majorticks'*multiplier);
+    else
+        labels = num2str(majorticks(end:-1:1)'*multiplier);
+    end
     
     zerocomp = zeros(size(majorticks)); % represents zero composition
     
 	% Plot right labels (no c - only b a)
     [lxc, lyc] = terncoords(1-majorticks, majorticks, zerocomp);
-	text(lxc+0.05, lyc-0.025, [repmat('  ', length(labels), 1) labels]);
-    
+ 	text(lxc+0.065, lyc-0.025, [repmat('  ', length(labels), 1) labels]); % the offsets are modified
+
 	% Plot bottom labels (no b - only a c)
     [lxb, lyb] = terncoords(majorticks, zerocomp, 1-majorticks); % fB = 1-fA
-	text(lxb-0.115, lyb-0.065, labels, 'VerticalAlignment', 'Top');
+	text(lxb-0.1, lyb-0.07, labels, 'VerticalAlignment', 'Top'); % the offsets are modified
 	
 	% Plot left labels (no a, only c b)
 	[lxa, lya] = terncoords(zerocomp, 1-majorticks, majorticks);
