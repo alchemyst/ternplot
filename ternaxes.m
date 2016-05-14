@@ -10,6 +10,8 @@
 % 20160405 (SA) Added lines to change the order/direction of axes (i.e.
 %               clockwise or counter-clockwise) cooresponding to user-specified 
 %               option on terncoords
+% 20161305 (SA) the offsets of tick labels (text) along x and y axes are
+%               modified
 
 % Modifiers
 % (CS) Carl Sandrock
@@ -85,11 +87,11 @@ if ~hold_state
     
 	% Plot right labels (no c - only b a)
     [lxc, lyc] = terncoords(1-majorticks, majorticks, zerocomp);
-	text(lxc+0.05, lyc-0.025, [repmat('  ', length(labels), 1) labels]);
-    
+ 	text(lxc+0.065, lyc-0.025, [repmat('  ', length(labels), 1) labels]); % the offsets are modified
+
 	% Plot bottom labels (no b - only a c)
     [lxb, lyb] = terncoords(majorticks, zerocomp, 1-majorticks); % fB = 1-fA
-	text(lxb-0.115, lyb-0.065, labels, 'VerticalAlignment', 'Top');
+	text(lxb-0.1, lyb-0.07, labels, 'VerticalAlignment', 'Top'); % the offsets are modified
 	
 	% Plot left labels (no a, only c b)
 	[lxa, lya] = terncoords(zerocomp, 1-majorticks, majorticks);
