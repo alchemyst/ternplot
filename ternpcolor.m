@@ -17,6 +17,6 @@
 
 % To do: Better error checking
 
-function ternpcolor(varargin)
-ternsurf(varargin{:});
+function h_ternpcolor = ternpcolor(varargin) % plot handle is added as function output
+h_ternpcolor = ternsurf(varargin{:});
 view(0, 90);
