@@ -28,19 +28,22 @@
 % 20031006 (CS) Added call to SIMPLETRI to plot triangular surface
 % 20070107 (CS) Modified to use new structure (more subroutines)
 % 20160405 (SA) Added an input argument 'major', and an output argument 'handle'
+% 20161305 (SA) Removed 'Z' input argument, changed upper limit of nargin
+%               from 4 to 6
 
 % Modifiers
 % CS Carl Sandrock
 % SA Shahab Afshari
 
-function handle = ternsurf(A, B, C, Z, varargin)
+function handle = ternsurf(A, B, C, varargin) % Z arguement is removed
 
-if nargin < 4
+if nargin < 6 % it was orginally 4
     Z = C;
     C = 1 - (A+B);
 end;
 
-[varargin, majors] = extractpositional(varargin, 'majors', 10);
+[varargin, majors] = extractpositional(varargin , 'majors', 10);
+
 
 [fA, fB, fC] = fractions(A, B, C);
 [x, y] = terncoords(fA, fB, fC);
