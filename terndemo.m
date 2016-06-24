@@ -7,7 +7,7 @@ dataC = 1 - dataA - dataB;
 A = linspace(0, 1, 100);
 B = -A.^2+A;
 
-ternplot(dataA, dataB, dataC, 'r.');
+ternplot(dataA, dataB, dataC, 'r.', 'majors', 5);
 hold on
 ternplot(A, B)
 ternlabel('A', 'B', 'C')
