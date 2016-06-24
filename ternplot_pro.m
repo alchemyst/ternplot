@@ -36,7 +36,7 @@
 % Modifiers
 % (SA) Shahab Afshari
 
-function hfinal = ternplot_pro(dataA,dataB,dataC,num_axes_steps,num_color_classes)
+function hfinal = ternplot_pro(dataA, dataB, dataC, num_axes_steps, num_color_classes)
 % preliminary effort for getting the indices of values of verticies and faces of
 % each triangular cell generated according to desired number of axial steps
 h0 = figure;

@@ -20,6 +20,7 @@ if nargin < 1
     majors = 10;
 end
 
+% TODO: Handle these as options
 direction = 'clockwise';
 percentage = false;
 
@@ -59,7 +60,7 @@ if ~hold_state
 	set(gca, 'visible', 'off');
 
     % plot background if necessary
-    if ~isstr(get(cax,'color'))
+    if ~ischar(get(cax,'color'))
        patch('xdata', [0 1 0.5 0], 'ydata', [0 0 sin(1/3*pi) 0], ...
              'edgecolor',tc,'facecolor',get(gca,'color'),...
              'handlevisibility','off');

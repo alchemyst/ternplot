@@ -17,7 +17,7 @@
 % Modifiers
 % (CS) Carl Sandrock 
 
-function tri = simpletri(N);
+function tri = simpletri(N)
 
 % for each square, divide diagonally from top left to bottom right
 % The two triangles have their top left and bottom right points in common,

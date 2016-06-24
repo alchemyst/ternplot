@@ -13,5 +13,5 @@ assert(value == 10, 'Incorrect value extracted');
 
 %% Edge case: empty list
 [args, value] = extractpositional({}, 'majors', 10);
-assert(length(args) == 0, 'Empty args not handled correctly');
+assert(isempty(args), 'Empty args not handled correctly');
 assert(value == 10, 'Empty args not handled correctly');

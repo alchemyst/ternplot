@@ -17,10 +17,11 @@ hold off
 %% Simple two-d density plot
 num_axes_steps = 5;
 num_color_classes = 5;
-ternplot_pro(dataA,dataB,dataC,num_axes_steps,num_color_classes)
+ternplot_pro(dataA, dataB, dataC, num_axes_steps, num_color_classes)
 ternlabel('A', 'B', 'C')
 hold on
 ternplot(dataA, dataB, dataC, 'r.');
+hold off
 
 %% Three D plot for viscosity of HIPS, ABS and PETG polymer blends
 experimental = [...
