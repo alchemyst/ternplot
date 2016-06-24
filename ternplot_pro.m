@@ -30,23 +30,54 @@
 % To Do
 
 % Modifications
+% SA The value of 'majors' at the final plot is fixed to 10 to avoid tick
+%    label interruption
 
 % Modifiers
 % (SA) Shahab Afshari
 
 function hfinal = ternplot_pro(dataA,dataB,dataC,num_axes_steps,num_color_classes)
-
 % preliminary effort for getting the indices of values of verticies and faces of
 % each triangular cell generated according to desired number of axial steps
 h0 = figure;
 elev = zeros(num_axes_steps,1);
 experimental = [linspace(0,1,num_axes_steps)',linspace(1,0,num_axes_steps)',elev];
-h = ternpcolor(experimental(:, 1)', experimental(:, 2)', experimental(:, 3)',num_axes_steps);
+%%%%
+Z = experimental(:, 3)';
+[fA, fB, fC] = fractions(experimental(:, 1)', experimental(:, 2)', experimental(:, 3)');
+[x, y] = terncoords(fA, fB, fC);
+% Sort data points in x order
+[x, i] = sort(x);
+y = y(i);
+Z = Z(i);
+% The matrixes we work with should be square for the triangulation to work
+N = num_axes_steps+1;
+% Now we have X, Y, Z as vectors. 
+% use meshgrid to generate a grid
+Ar = linspace(min(fA), max(fA), N);
+Br = linspace(min(fB), max(fB), N);
+[Ag, Bg] = meshgrid(Ar, Br);
+[xg, yg] = terncoords(Ag, Bg);
+% ...then use griddata to get a plottable array
+zg = griddata(x, y, Z, xg, yg, 'v4');
+zg(Ag + Bg > 1) = nan;
+% Make ternary axes
+[hold_state, cax, next] = ternaxes(num_axes_steps);
+% plot data
+tri = simpletri(N);
+h = trisurf(tri, xg, yg, zg);
+view([-37.5, 30]);
+if ~hold_state
+    set(gca,'dataaspectratio',[1 1 1]), axis off;
+    set(cax,'NextPlot',next);
+end
+view(0, 90);
 h.FaceColor = 'none';
 v = h.Vertices;
 f = h.Faces;
 close(h0)
-
+clear fA fB fC x y N Ag Bg Ar Br xg yg hold_state cax next
+%%%%
 f2 = f;
 f2(ismember(f2(:,1),find(isnan(v(:,3)))),:)=[];
 f2(ismember(f2(:,2),find(isnan(v(:,3)))),:)=[];
@@ -74,7 +105,7 @@ c_mat = [c_mat_1(1:end-1),c_mat_1(2:end),c_mat];
 %
 % Plotting Ternary Diagram 
 hfinal = figure;
-ternplot(dataA, dataB, dataC,num_axes_steps,'.','color','none')
+ternplot(dataA, dataB, dataC,'majors', 10,'.','color','none') % here the 'majors' is fixed to 10 to avoid text-lable interruption.
 set(gca, 'visible', 'off');
 hold on
 for i = 1: size(f2,1)
@@ -94,9 +125,9 @@ modified_color_bar = num2str(...
 h_colbar = colorbar('XTickLabel',{num2str(round(c_mat_down,2));...
 modified_color_bar}, ...
     'XTick',linspace(0,1,num_color_classes)','location','eastoutside');
-ylabel(h_colbar,['Density of AHG (% of Tot. Counts),','Tot. Counts =', num2str(length(dataA))],'fontsize',10,'rotation',90)
+ylabel(h_colbar,['Density (% of Tot. Counts),','Tot. Counts =', num2str(length(dataA))],'fontsize',10,'rotation',90)
 set(gca, 'visible', 'off');
-ht = ternlabel('b^{*}', 'f^{*}', 'm^{*}');
+%ht = ternlabel('b^{*}', 'f^{*}', 'm^{*}');
 % h_text = ternlabel('b', 'f', 'm');
 % h_text(1).FontSize = 14;
 % h_text(2).FontSize = 14;
