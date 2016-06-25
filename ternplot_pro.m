@@ -72,9 +72,9 @@ if ~hold_state
     set(cax,'NextPlot',next);
 end
 view(0, 90);
-h.FaceColor = 'none';
-v = h.Vertices;
-f = h.Faces;
+set(h, 'FaceColor', 'none');
+v = get(h, 'Vertices');
+f = get(h, 'Faces');
 close(h0)
 clear fA fB fC x y N Ag Bg Ar Br xg yg hold_state cax next
 %%%%
