@@ -14,10 +14,10 @@
 %   unrecognized options will be passed through to the PLOT command. The
 %   following options are used by this function:
 %
-%   Parameter Default Description
-%   --------- ------- -----------
-%   majors    10      The number of major intervals to divide the plot grid into.
-%             
+%   Parameter  Default Description
+%   ---------  ------- -----------
+%   majors     10      The number of major intervals to divide the plot grid into.
+%   sortpoints false   Sort points in x order before plotting          
 %
 %   Example
 %
@@ -54,14 +54,17 @@ if nargin < 3
 end;
 
 [varargin, majors] = extractpositional(varargin, 'majors', 10);
+[varargin, sortpoints] = extractpositional(varargin, 'sortpoints', false);
 
 [fA, fB, fC] = fractions(A, B, C);
 
 [x, y] = terncoords(fA, fB, fC);
 
 % Sort data points in x order
-[x, i] = sort(x);
-y = y(i);
+if sortpoints
+    [x, i] = sort(x);
+    y = y(i);
+end
 
 % Make ternary axes
 [hold_state, cax, next] = ternaxes(majors);
